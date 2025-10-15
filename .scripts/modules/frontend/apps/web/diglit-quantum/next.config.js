@@ -1,10 +1,8 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: true,
+const nextConfig = {
   experimental: {
-    appDir: true,
+    // Remove appDir as it's now default in Next.js 14
   },
-  images: {
-    domains: ['localhost'],
-  },
-};
+}
+
+module.exports = nextConfig
