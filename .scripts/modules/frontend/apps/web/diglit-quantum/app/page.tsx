@@ -1,5 +1,5 @@
-import DiglitLanding from '../components/DiglitLanding';
+import DiglitLanding from '@/components/DiglitLanding'
 
 export default function Home() {
-  return <DiglitLanding />;
+  return <DiglitLanding />
 }

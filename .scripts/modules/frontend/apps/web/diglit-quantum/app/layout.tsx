@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'DigLit - AI-Driven Enterprise Studio',
+  title: 'Dig|lit - Quantum Enterprise',
   description: 'Dream. Define. Design. Deploy. Delegate. AI-driven enterprise & automation studio.',
 };
 
@@ -14,3 +14,4 @@ export default function RootLayout({
     </html>
   );
 }
+EOF
