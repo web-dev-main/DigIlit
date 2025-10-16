@@ -1,34 +1,24 @@
 import express from 'express';
+import path from 'path';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Basic middleware
-app.use(express.json());
-app.use(express.static(join(__dirname, 'public')));
-
-// Health check endpoint
-app.get('/', (req, res) => {
-    res.json({
-        message: '🚀 Dig-lit Quantum AI Platform is running!',
-        status: 'OK', 
-        timestamp: new Date().toISOString(),
-        version: '1.0.0-alpha.1',
-        module: 'ES Modules'
-    });
-});
+// Serve static files from public directory (diglit-quantum frontend)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API health check
 app.get('/api/health', (req, res) => {
+    const now = new Date();
     res.json({ 
         status: 'healthy', 
-        service: 'quantum-ai-platform',
-        timestamp: new Date().toISOString()
+        service: 'diglit-quantum-platform',
+        timestamp: now.toISOString(),
+        uptime: process.uptime()
     });
 });
 
@@ -36,17 +26,23 @@ app.get('/api/health', (req, res) => {
 app.get('/api/test', (req, res) => {
     res.json({ 
         success: true,
-        message: 'API is working correctly',
-        data: { sample: 'This is test data from your backend' }
+        message: 'API is working correctly.',
+        data: {
+            sample: 'This is test data from your backend for the diglit-quantum frontend.'
+        }
     });
 });
 
-// Start server
+// Serve main page - fallback to index.html for SPA routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.listen(PORT, () => {
     console.log('==================================================');
-    console.log('🌌 QUANTUM AI PLATFORM - SERVER STARTED');
+    console.log('🌌 DIGLIT QUANTUM PLATFORM - SERVER STARTED');
     console.log('==================================================');
-    console.log(`📍 Local: http://localhost:${PORT}`);
+    console.log(`📍 Frontend: http://localhost:${PORT}`);
     console.log(`📊 Health: http://localhost:${PORT}/api/health`);
     console.log(`🧪 Test API: http://localhost:${PORT}/api/test`);
     console.log('==================================================');

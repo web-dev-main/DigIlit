@@ -38,7 +38,7 @@ echo "🌐 SETTING UP FRONTEND..."
 echo "=================================================="
 
 # Navigate to frontend
-cd modules/frontend/apps/web/diglit-web/
+cd modules/frontend/apps/web/diglit-quantum/
 
 echo "🔍 Frontend structure:"
 ls -la
