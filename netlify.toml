@@ -1,0 +1,12 @@
+[build]
+  base = ".scripts/modules/frontend/apps/web/diglit-web"
+  publish = "dist"
+  command = "npm ci && npm run build"
+
+[build.environment]
+  NODE_VERSION = "20.17.0"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

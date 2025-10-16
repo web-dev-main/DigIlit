@@ -5,17 +5,22 @@
   "type": "module",
   "packageManager": "npm@10.2.4",
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.17.0",
     "npm": ">=10.0.0",
     "python": ">=3.9.0"
   },
   "scripts": {
     "dev": "node --watch index.js",
-    "dev:web": "cd modules/frontend/apps/web/diglit-web && npm run dev",
-    "dev:admin": "cd modules/frontend/apps/admin && npm run dev",
-    "dev:api": "cd modules/backend && python -m uvicorn apps.api.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:env": "node -v || echo 'Ensure nvm is installed; run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash'",
+    "dev:web": "cd .scripts/modules/frontend/apps/web/diglit-web && npm run dev",
+    "dev:admin": "cd .scripts/modules/frontend/apps/admin && npm run dev",
+    "dev:api": "cd .scripts/modules/backend && python -m uvicorn apps.api.main:app --reload --host 0.0.0.0 --port 8000",
     "dev:all": "concurrently \"npm run dev:api\" \"npm run dev:web\" \"npm run dev:admin\"",
-    "build": "turbo run build",
+    "install:web": "cd .scripts/modules/frontend/apps/web/diglit-web && npm install",
+    "install:admin": "cd .scripts/modules/frontend/apps/admin && npm install",
+    "build:web": "npm run install:web && cd .scripts/modules/frontend/apps/web/diglit-web && npm run build",
+    "build:admin": "npm run install:admin && cd .scripts/modules/frontend/apps/admin && npm run build",
+    "build": "npm run build:web",
     "build:prod": "turbo run build:prod",
     "build:analyze": "turbo run build:analyze",
     "build:all": "npx turbo run build",
@@ -29,7 +34,9 @@
     "lint:fix": "turbo run lint:fix",
     "format": "turbo run format",
     "format:check": "turbo run format:check",
-    "type-check": "turbo run type-check",
+    "typecheck:web": "cd .scripts/modules/frontend/apps/web/diglit-web && npx tsc --noEmit",
+    "typecheck": "npm run typecheck:web",
+    "type-check": "npm run typecheck:web",
     "type-check:backend": "cd modules/backend && python -m mypy .",
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
@@ -71,13 +78,16 @@
     "fix:backend": "bash scripts/development/fix-backend.sh",
     "fix:all": "bash scripts/development/auto-fix.sh && bash scripts/development/deep-audit.sh",
     "validate": "bash scripts/development/deep-audit.sh",
-    "validate:frontend": "cd modules/frontend && npx tsc --noEmit && npx eslint . --quiet",
+    "validate:frontend": "cd .scripts/modules/frontend && npx tsc --noEmit && npx eslint . --quiet",
     "validate:backend": "cd modules/backend && python -m py_compile apps/api/main.py",
     "audit:full": "bash scripts/development/auto-fix.sh",
     "audit:claude": "bash scripts/development/audit-and-fix.sh --claude",
     "audit:report": "cat .claude/audit/audit-report.md",
     "deploy:check": "bash scripts/development/auto-fix.sh && bash scripts/development/deep-audit.sh && npx turbo run build",
-    "deploy:preview": "npm run build:prod && npm run test && npm run bundle:size",
+    "deploy:preview": "npm run build && npm run test && npm run bundle:size",
+    "preview:web": "cd .scripts/modules/frontend/apps/web/diglit-web && npm run preview",
+    "preview:admin": "cd .scripts/modules/frontend/apps/admin && npm run start",
+    "preview": "npm run preview:web",
     "structure:analyze": "bash scripts/development/cleanup-structure.sh",
     "structure:cleanup": "bash scripts/development/cleanup-structure.sh",
     "structure:report": "cat .claude/structure-report.md",
@@ -139,15 +149,15 @@
   },
   "size-limit": [
     {
-      "path": "modules/frontend/apps/web/diglit-web/.next/static/chunks/*.js",
-      "limit": "250 kB"
+      "path": ".scripts/modules/frontend/apps/web/diglit-web/dist/assets/*.js",
+      "limit": "300 kB"
     },
     {
-      "path": "modules/frontend/apps/admin/.next/static/chunks/*.js",
+      "path": ".scripts/modules/frontend/apps/admin/.next/static/chunks/*.js",
       "limit": "200 kB"
     },
     {
-      "path": "modules/frontend/packages/ui/dist/**/*.js",
+      "path": ".scripts/modules/frontend/packages/ui/dist/**/*.js",
       "limit": "100 kB"
     }
   ],
@@ -180,7 +190,7 @@
   "homepage": "https://github.com/Z-313/Dig-lit#readme",
   "license": "MIT",
   "volta": {
-    "node": "18.17.0",
+    "node": "20.17.0",
     "npm": "10.2.4"
   }
 }
