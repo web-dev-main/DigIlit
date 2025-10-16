@@ -1,0 +1,8 @@
+- Converted repo root to a minimal Next.js 14 App Router app for the DigLit landing page.
+- Added Tailwind CSS with sensible defaults and global styles; wired into `app/layout.tsx`.
+- Migrated landing UI into `components/DiglitLanding.tsx`, ensured TypeScript safety and accessibility tweaks.
+- Simplified root `package.json` scripts for dev/build/start/preview, lint/format/typecheck; aligned deps for Next 14 + TS 5.
+- Resolved ESM conflicts by using `export default` in `next.config.js` and renaming `postcss.config.cjs`, `tailwind.config.cjs`, `.eslintrc.cjs`.
+- Added `.editorconfig`, `.eslintrc.cjs`, `.prettierrc`, updated `tsconfig.json` path mapping for `@/*`.
+- Added `.env.example` and a minimal GitHub Actions CI (`.github/workflows/ci.yml`).
+- Verified `npm run build` succeeds; static landing page generated.
